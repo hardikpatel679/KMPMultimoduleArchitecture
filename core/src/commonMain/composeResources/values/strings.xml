@@ -1,0 +1,30 @@
+<resources>
+    <string name="login_welcome">Welcome Back</string>
+    <string name="login_subtitle">Login to your account</string>
+    <string name="login_username_label">Username</string>
+    <string name="login_username_placeholder">Enter your username</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_password_placeholder">Enter your password</string>
+    <string name="login_show_password">Show</string>
+    <string name="login_hide_password">Hide</string>
+    <string name="login_button">Login</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="app_click_me">Click me!</string>
+    <string name="app_greeting">Compose: %s</string>
+    <string name="app_logout">Logout</string>
+    <string name="error_network">No internet connection</string>
+    <string name="error_serialization">Error parsing server response</string>
+    <string name="error_unauthorized">Unauthorized access</string>
+    <string name="error_forbidden">Access forbidden</string>
+    <string name="error_not_found">Resource not found</string>
+    <string name="error_server">Server error occurred (Code: %1$d)</string>
+    <string name="error_unknown">An unexpected error occurred</string>
+    <string name="error_client">Client Error</string>
+    <string name="error_response">Response Error</string>
+    <string name="error_login_failed">Login failed</string>
+    <string name="hello_message">Hello, %1$s!</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_welcome">Welcome to the Dashboard!</string>
+</resources>
