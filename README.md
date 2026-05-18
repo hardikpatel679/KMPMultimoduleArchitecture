@@ -1,10 +1,19 @@
-## 🚀 Android
-
-<img width="1466" height="3101" alt="Screenshot_20260518_181107" src="https://github.com/user-attachments/assets/f81569c2-3c45-4a24-9ec3-23c52fa611c6" />
-
-## 🚀 iOS
-
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 - 2026-05-18 at 18 11 44" src="https://github.com/user-attachments/assets/3948e0d6-5508-4348-953e-c7944c50a08a" />
+<div align="center">
+  <table>
+    <tr>
+      <th align="center">🤖 Android</th>
+      <th align="center">🍎 iOS</th>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/f81569c2-3c45-4a24-9ec3-23c52fa611c6" width="300" />
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/3948e0d6-5508-4348-953e-c7944c50a08a" width="300" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 
 # KMP - Multimodule + Clean Architecture with MVI
