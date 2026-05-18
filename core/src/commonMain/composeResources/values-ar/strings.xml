@@ -1,0 +1,30 @@
+<resources>
+    <string name="login_welcome">مرحباً بعودتك</string>
+    <string name="login_subtitle">قم بتسجيل الدخول إلى حسابك</string>
+    <string name="login_username_label">اسم المستخدم</string>
+    <string name="login_username_placeholder">أدخل اسم المستخدم الخاص بك</string>
+    <string name="login_password_label">كلمة المرور</string>
+    <string name="login_password_placeholder">ادخل كلمة المرور الخاصة بك</string>
+    <string name="login_show_password">إظهار</string>
+    <string name="login_hide_password">إخفاء</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="login_forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="login_no_account">ليس لديك حساب؟</string>
+    <string name="login_sign_up">سجل الآن</string>
+    <string name="app_click_me">انقر هنا!</string>
+    <string name="app_greeting">كومبوز: %s</string>
+    <string name="app_logout">تسجيل الخروج</string>
+    <string name="error_network">لا يوجد اتصال بالإنترنت</string>
+    <string name="error_serialization">خطأ في تحليل استجابة الخادم</string>
+    <string name="error_unauthorized">وصول غير مصرح به</string>
+    <string name="error_forbidden">الوصول ممنوع</string>
+    <string name="error_not_found">المورد غير موجود</string>
+    <string name="error_server">حدث خطأ في الخادم (الكود: %1$d)</string>
+    <string name="error_unknown">حدث خطأ غير متوقع</string>
+    <string name="error_client">خطأ في العميل</string>
+    <string name="error_response">خطأ في الاستجابة</string>
+    <string name="error_login_failed">فشل تسجيل الدخول</string>
+    <string name="hello_message">مرحباً، %1$s!</string>
+    <string name="dashboard_title">لوحة القيادة</string>
+    <string name="dashboard_welcome">مرحباً بك في لوحة القيادة!</string>
+</resources>
