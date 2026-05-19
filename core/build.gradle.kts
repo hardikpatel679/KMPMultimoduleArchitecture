@@ -9,8 +9,8 @@ plugins {
 kotlin {
     android {
         namespace = "com.hdapp.myapplication.core"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
         
         androidResources {
             enable = true
@@ -29,10 +29,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.client.logging)
-            implementation(libs.kotlinx.serialization.json)
+            api(libs.ktor.client.content.negotiation)
+            api(libs.ktor.serialization.kotlinx.json)
+            api(libs.ktor.client.logging)
+            api(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
             
             implementation(libs.compose.runtime)

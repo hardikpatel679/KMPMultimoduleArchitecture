@@ -1,10 +1,8 @@
 package com.hdapp.myapplication
 
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
+import com.hdapp.myapplication.core.ProvideAppStrings
 import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.domain.model.User
 import com.hdapp.myapplication.domain.repository.LoginRepository
@@ -30,7 +28,9 @@ class LoginScreenTest {
         val viewModel = LoginViewModel(LoginUseCase(FakeLoginRepository()))
         
         composeTestRule.setContent {
-            LoginScreen(viewModel = viewModel, onLoginSuccess = {})
+            ProvideAppStrings(isArabic = false) {
+                LoginScreen(viewModel = viewModel, onLoginSuccess = {})
+            }
         }
 
         composeTestRule.onNodeWithTag(TestTags.LOGIN_LOGO).assertExists()
@@ -43,7 +43,9 @@ class LoginScreenTest {
         var loginSuccessCalled = false
         
         composeTestRule.setContent {
-            LoginScreen(viewModel = viewModel, onLoginSuccess = { loginSuccessCalled = true })
+            ProvideAppStrings(isArabic = false) {
+                LoginScreen(viewModel = viewModel, onLoginSuccess = { loginSuccessCalled = true })
+            }
         }
 
         composeTestRule.onNodeWithTag(TestTags.LOGIN_USERNAME_FIELD).performTextInput("testuser")
@@ -52,5 +54,20 @@ class LoginScreenTest {
         
         composeTestRule.waitForIdle()
         assert(loginSuccessCalled)
+    }
+
+    @Test
+    fun testLanguageConsistency() {
+        val viewModel = LoginViewModel(LoginUseCase(FakeLoginRepository()))
+        
+        composeTestRule.setContent {
+            ProvideAppStrings(isArabic = true) { // Test with Arabic
+                LoginScreen(viewModel = viewModel, onLoginSuccess = {})
+            }
+        }
+
+        // Verify that Username and Password labels are still in English as requested
+        composeTestRule.onNodeWithText("Username").assertExists()
+        composeTestRule.onNodeWithText("Password").assertExists()
     }
 }

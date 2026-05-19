@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.shared)
     implementation(projects.core)
     implementation(project(":feature:login"))
+    implementation(project(":feature:dashboard"))
     implementation(project(":data"))
     implementation(project(":domain"))
 
@@ -32,14 +33,17 @@ dependencies {
 
 android {
     namespace = "com.hdapp.myapplication"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.hdapp.myapplication"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
+        versionCode = 2
+        versionName = "1.1"
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {
@@ -51,6 +55,24 @@ android {
             isMinifyEnabled = false
         }
     }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("mock") {
+            dimension = "environment"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+        }
+        create("prod") {
+            dimension = "environment"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

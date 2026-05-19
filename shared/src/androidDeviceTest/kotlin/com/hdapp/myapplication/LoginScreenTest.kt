@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsDisplayed
 import com.hdapp.myapplication.core.NetworkError
+import com.hdapp.myapplication.core.ProvideAppStrings
 import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.domain.model.User
 import com.hdapp.myapplication.domain.repository.LoginRepository
@@ -48,10 +49,12 @@ class LoginScreenTest {
     fun testLoginSuccess() {
         var successCalled = false
         composeTestRule.setContent {
-            LoginScreen(
-                viewModel = viewModel,
-                onLoginSuccess = { successCalled = true }
-            )
+            ProvideAppStrings(isArabic = false) {
+                LoginScreen(
+                    viewModel = viewModel,
+                    onLoginSuccess = { successCalled = true }
+                )
+            }
         }
 
         // Clear default values and enter test credentials
@@ -72,12 +75,12 @@ class LoginScreenTest {
     @Test
     fun testLoginFailure() {
         composeTestRule.setContent {
-            LoginScreen(
-                viewModel = viewModel,
-                onLoginSuccess = {
-
-                }
-            )
+            ProvideAppStrings(isArabic = false) {
+                LoginScreen(
+                    viewModel = viewModel,
+                    onLoginSuccess = {}
+                )
+            }
         }
 
         composeTestRule.onNodeWithTag(TestTags.LOGIN_USERNAME_FIELD).performTextClearance()
@@ -86,10 +89,10 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag(TestTags.LOGIN_PASSWORD_FIELD).performTextClearance()
         composeTestRule.onNodeWithTag(TestTags.LOGIN_PASSWORD_FIELD).performTextInput("wrong")
 
-        // We don't click login here because triggering the snackbar causes NPE with Res.getString in tests
-        // Instead, we just verify the fields are there.
-        // In a real scenario, we'd mock the localizer or fix the resource initialization.
-        
-        composeTestRule.onNodeWithTag(TestTags.LOGIN_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(TestTags.LOGIN_BUTTON).performClick()
+        composeTestRule.waitForIdle()
+
+        // Now we can verify the error message because we are using AppStrings instead of Res.getString
+        composeTestRule.onNodeWithTag(TestTags.LOGIN_ERROR_MESSAGE).assertIsDisplayed()
     }
 }

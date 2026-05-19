@@ -10,4 +10,6 @@ object TestTags {
     const val DASHBOARD_WELCOME_TEXT = "dashboardWelcomeText"
     const val DASHBOARD_LOGOUT_BUTTON = "dashboardLogoutButton"
     const val DASHBOARD_LANGUAGE_SWITCH = "dashboardLanguageSwitch"
+    const val DASHBOARD_PRODUCT_LIST = "dashboardProductList"
+    const val DASHBOARD_SEARCH_FIELD = "dashboardSearchField"
 }

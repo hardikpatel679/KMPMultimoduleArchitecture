@@ -1,7 +1,6 @@
 package com.hdapp.myapplication.data.model
 
 import com.hdapp.myapplication.domain.model.User
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,7 +12,8 @@ data class RemoteLoginResponse(
     val lastName: String,
     val gender: String,
     val image: String,
-    val accessToken: String
+    val accessToken: String,
+    val refreshToken: String? = null
 )
 fun RemoteLoginResponse.toDomain(): User {
     return User(

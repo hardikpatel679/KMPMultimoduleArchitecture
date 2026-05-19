@@ -9,8 +9,8 @@ plugins {
 kotlin {
     android {
         namespace = "com.hdapp.myapplication.feature.dashboard"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
 
         withHostTest {}
 
@@ -32,8 +32,10 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.icons.extended)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
+            implementation(libs.kamel)
             api(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)

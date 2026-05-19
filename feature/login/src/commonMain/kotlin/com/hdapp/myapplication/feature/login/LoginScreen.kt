@@ -1,7 +1,6 @@
 package com.hdapp.myapplication.feature.login
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,9 +17,6 @@ import com.hdapp.myapplication.core.localizedMessage
 import com.hdapp.myapplication.core.strings
 import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.platform.testTag
-import org.jetbrains.compose.resources.painterResource
-import myapplication.core.generated.resources.Res
-import myapplication.core.generated.resources.ic_logo
 
 @Composable
 fun LoginScreen(
@@ -29,8 +25,8 @@ fun LoginScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val currentStrings = strings
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("emilys") }
+    var password by remember { mutableStateOf("emilyspass") }
     var passwordVisible by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -62,14 +58,15 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-        Image(
-            painter = painterResource(Res.drawable.ic_logo),
-            contentDescription = "App Logo",
+        Box(
             modifier = Modifier
                 .size(Dimens.logoSize)
                 .padding(Dimens.paddingSmall)
-                .testTag(TestTags.LOGIN_LOGO)
-        )
+                .testTag(TestTags.LOGIN_LOGO),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("LOGO")
+        }
 
         Spacer(modifier = Modifier.height(Dimens.spacingLarge))
 

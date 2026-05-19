@@ -1,4 +1,4 @@
-# KMP - Multimodule + Clean Architecture with MVI
+# KMP - Multimodule + Clean Architecture with MVI v1.1
 
 A professional-grade **Kotlin Multiplatform (KMP)** mobile application built with **Clean Architecture** and the **MVI (Model-View-Intent)** pattern. This project showcases modern cross-platform development, demonstrating a highly modularized structure, platform-independent business logic, and advanced UI patterns.
 
@@ -10,6 +10,9 @@ A professional-grade **Kotlin Multiplatform (KMP)** mobile application built wit
 - **Clean Architecture:** Strict separation of concerns (Domain, Data, Feature, UI) to ensure maintainability and testability.
 - **Multi-Module Architecture:** Fine-grained module strategy to optimize build times and enforce strict architectural boundaries.
 - **Localization & Theme Support:** Full support for RTL (Arabic) and LTR (English) languages, with theme-aware assets (Adaptive Logo).
+- **Image Loading:** Efficient asynchronous image loading and caching using **Kamel**.
+- **Pagination & Search:** Integrated search and infinite scrolling (pagination) in the dashboard product list.
+- **Reusable UI Components:** Atomic design approach with reusable common widgets in the `:core` module.
 
 ---
 
@@ -24,10 +27,10 @@ The project follows a "Feature-First" modularization strategy:
 | `:androidApp` | Platform | The Android entry point, handling Hilt setup and platform-specific Activity configurations. |
 | `:shared` | Orchestration | Coordinates features and shared UI. Contains the `KmpDI` bridge for cross-platform dependency access. |
 | `:feature:login` | Feature | Self-contained module for Login functionality, including MVI ViewModels and UI. |
-| `:feature:dashboard` | Feature | Dashboard feature module with localization toggles and session management. |
+| `:feature:dashboard` | Feature | Dashboard feature module with localization toggles, search, and pagination. |
 | `:domain` | Core | The heart of the app: contains Business Models, Repository Interfaces, and Use Cases. Pure Kotlin. |
 | `:data` | Infrastructure | Implementation of repositories, Ktor networking, and data mapping logic. |
-| `:core` | Utility | Shared UI components, Design System (`Dimens`), Test Tags, and networking helpers. |
+| `:core` | Utility | Shared UI components (`LoadingView`, `EmptyStateView`), Design System, Test Tags, and networking helpers. |
 
 ---
 
@@ -35,21 +38,29 @@ The project follows a "Feature-First" modularization strategy:
 
 - **UI:** Compose Multiplatform (Material 3)
 - **Networking:** Ktor Client (Content Negotiation, Logging, Serialization)
+- **Image Loading:** Kamel (Asynchronous image loading for Compose Multiplatform)
 - **Serialization:** Kotlinx.Serialization
 - **DI:** Dagger Hilt (Android) & Manual DI Bridge (KMP/iOS)
 - **Concurrency:** Kotlin Coroutines & Flows
-- **Resource Management:** MOKO Resources / Compose Resources (Adaptive Drawables)
+- **Resource Management:** Compose Resources (Adaptive Drawables)
 
 ---
 
 ## 🎨 MVI & UI Implementation
 
 This project implements a clean MVI pattern to manage UI state:
-- **State:** A single source of truth for the UI (e.g., `LoginState`).
-- **Intent:** User actions or system events (e.g., `LoginIntent.Login`).
-- **Effect:** One-time side effects like navigation or showing snackbars (e.g., `LoginEffect.NavigateToHome`).
+- **State:** A single source of truth for the UI (e.g., `LoginState`, `DashboardState`).
+- **Intent:** User actions or system events (e.g., `LoginIntent.Login`, `DashboardIntent.LoadMoreProducts`).
+- **Effect:** One-time side effects like navigation or showing snackbars (e.g., `LoginEffect.NavigateToHome`, `DashboardEffect.NavigateToLogin`).
 
-**Localization:** Dynamic switching between English (LTR) and Arabic (RTL) is handled at the core level, affecting both layout and resources.
+### 📦 Key Features
+- **Authentication:** Secure login flow with error handling and session state.
+- **Product Dashboard:** 
+    - **Multi-Tab Interface:** Products, Wealth, Service, and Cart.
+    - **Live Search:** Filter products in real-time with an animated search bar.
+    - **Infinite Scrolling:** Dynamic pagination to load more products as you scroll.
+- **Componentization:** Reusable widgets like `ProductItemCard`, `LanguageSwitcher`, and `DashboardSearchBar`.
+- **Localization:** Dynamic switching between English (LTR) and Arabic (RTL) at runtime.
 
 ---
 
@@ -83,11 +94,11 @@ The project maintains a high standard of quality through comprehensive testing:
 
 ### Running Tests
 ```bash
-# Run all unit tests
-./gradlew test
+# Run all unit tests across all modules
+./gradlew allTests
 
-# Run UI tests (Android)
-./gradlew connectedAndroidTest
+# Run UI tests (Requires connected Android device/emulator)
+./gradlew :shared:connectedAndroidDeviceTest
 ```
 
 ---
@@ -98,3 +109,4 @@ The project maintains a high standard of quality through comprehensive testing:
 - **Clean Architecture:** Enterprise-grade code organization.
 - **Resource Handling:** Adaptive icons, multi-language support (RTL).
 - **Quality Assurance:** Unit and UI testing with modern tools.
+- **UI Refactoring:** Atomic design with reusable components.

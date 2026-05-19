@@ -20,23 +20,18 @@ fun App(
     val loginState by loginViewModel.state.collectAsState()
     val dashboardState by dashboardViewModel.state.collectAsState()
 
-    println("App: Recomposing. User=${loginState.user?.username}, isArabic=${dashboardState.isArabic}")
-
     AppLocalization(isArabic = dashboardState.isArabic) {
         ProvideAppStrings(isArabic = dashboardState.isArabic) {
             MaterialTheme {
                 if (loginState.user == null) {
                     LoginScreen(
                         viewModel = loginViewModel,
-                        onLoginSuccess = { 
-                            println("App: onLoginSuccess callback called")
-                        }
+                        onLoginSuccess = { }
                     )
                 } else {
                     DashboardScreen(
                         viewModel = dashboardViewModel,
                         onLogout = { 
-                            println("App: onLogout callback called")
                             loginViewModel.onIntent(LoginIntent.Logout)
                         }
                     )
