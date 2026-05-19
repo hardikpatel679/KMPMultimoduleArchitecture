@@ -54,3 +54,11 @@ kotlin {
 compose.resources {
     publicResClass = true
 }
+
+tasks.register("assembleDebug") {
+    dependsOn("assemble")
+}
+
+tasks.register("assembleRelease") {
+    dependsOn("assemble")
+}

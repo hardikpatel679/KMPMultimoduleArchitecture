@@ -4,5 +4,4 @@ object NetworkConstants {
     const val BASE_URL = "https://dummyjson.com"
     const val LOGIN_ENDPOINT = "$BASE_URL/auth/login"
     const val PRODUCTS_ENDPOINT = "$BASE_URL/products"
-    const val PRODUCTS_SEARCH_ENDPOINT = "$BASE_URL/products/search"
 }
