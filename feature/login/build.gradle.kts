@@ -9,8 +9,8 @@ plugins {
 kotlin {
     android {
         namespace = "com.hdapp.myapplication.feature.login"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
 
         withHostTest {}
 
