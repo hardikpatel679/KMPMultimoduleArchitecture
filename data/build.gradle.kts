@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -29,11 +28,9 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
         }
         androidMain.dependencies {
-            implementation(libs.hilt.android)
         }
     }
 }
 
 dependencies {
-    add("kspAndroid", libs.hilt.compiler)
 }

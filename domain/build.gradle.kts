@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -31,11 +30,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
         androidMain.dependencies {
-            implementation(libs.hilt.android)
         }
     }
 }
 
 dependencies {
-    add("kspAndroid", libs.hilt.compiler)
 }
