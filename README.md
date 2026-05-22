@@ -6,7 +6,7 @@
     </tr>
     <tr>
       <td align="center">
-      <img width="1344" height="2992" alt="Screenshot_20260522_131616" src="https://github.com/user-attachments/assets/9c2bdebb-2727-4c17-92e3-79bef6942952" width="300"/>
+      <img width="1344" height="2992" src="https://github.com/user-attachments/assets/9c2bdebb-2727-4c17-92e3-79bef6942952" width="300"/>
       </td>
       <td align="center">
         <img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 - 2026-05-22 at 13 15 36" src="https://github.com/user-attachments/assets/fa26093a-92ee-4ec6-b394-f3bcf6db6ef8" width="300 />
