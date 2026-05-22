@@ -18,13 +18,14 @@ import com.hdapp.myapplication.core.localizedMessage
 import com.hdapp.myapplication.core.strings
 import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.platform.testTag
+import org.koin.compose.viewmodel.koinViewModel
 import org.jetbrains.compose.resources.painterResource
 import myapplication.core.generated.resources.Res
 import myapplication.core.generated.resources.ic_logo
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
+    viewModel: LoginViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()

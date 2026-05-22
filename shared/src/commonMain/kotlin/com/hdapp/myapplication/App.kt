@@ -11,11 +11,12 @@ import com.hdapp.myapplication.feature.dashboard.DashboardViewModel
 import com.hdapp.myapplication.feature.login.LoginIntent
 import com.hdapp.myapplication.feature.login.LoginScreen
 import com.hdapp.myapplication.feature.login.LoginViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun App(
-    loginViewModel: LoginViewModel,
-    dashboardViewModel: DashboardViewModel
+    loginViewModel: LoginViewModel = koinViewModel(),
+    dashboardViewModel: DashboardViewModel = koinViewModel()
 ) {
     val loginState by loginViewModel.state.collectAsState()
     val dashboardState by dashboardViewModel.state.collectAsState()

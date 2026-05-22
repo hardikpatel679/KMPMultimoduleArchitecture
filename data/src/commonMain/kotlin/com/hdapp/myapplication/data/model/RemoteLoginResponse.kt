@@ -13,7 +13,8 @@ data class RemoteLoginResponse(
     val lastName: String,
     val gender: String,
     val image: String,
-    val accessToken: String
+    val accessToken: String = "",
+    val token: String = ""
 )
 fun RemoteLoginResponse.toDomain(): User {
     return User(
@@ -24,6 +25,6 @@ fun RemoteLoginResponse.toDomain(): User {
         lastName = lastName,
         gender = gender,
         image = image,
-        accessToken = accessToken
+        accessToken = accessToken.ifEmpty { token }
     )
 }

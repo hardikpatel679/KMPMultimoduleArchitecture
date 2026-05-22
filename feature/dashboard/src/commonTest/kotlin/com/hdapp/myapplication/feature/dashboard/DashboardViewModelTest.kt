@@ -51,6 +51,19 @@ class DashboardViewModelTest {
     }
 
     @Test
+    fun `select tab updates state correctly`() = runTest {
+        viewModel.state.test {
+            assertEquals(DashboardState(selectedTab = DashboardTab.Product), awaitItem())
+
+            viewModel.onIntent(DashboardIntent.SelectTab(DashboardTab.Wealth))
+            assertEquals(DashboardState(selectedTab = DashboardTab.Wealth), awaitItem())
+
+            viewModel.onIntent(DashboardIntent.SelectTab(DashboardTab.Cart))
+            assertEquals(DashboardState(selectedTab = DashboardTab.Cart), awaitItem())
+        }
+    }
+
+    @Test
     fun `logout emits NavigateToLogin effect`() = runTest {
         viewModel.effect.test {
             viewModel.onIntent(DashboardIntent.Logout)
