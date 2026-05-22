@@ -4,11 +4,14 @@ import Shared
 @main
 struct iOSApp: App {
     init() {
-        // MANUAL ENVIRONMENT SETTING
-        // Change this to .dev, .mock, or .prod as needed
-        BuildContext.shared.environment = .mock
+        KmpDIKt.doInitKoin()
+
+        // Renamed to AppBuildContext to avoid potential name conflicts
+        // and using full names for clarity
+        let sharedContext = AppBuildContext.shared
+        sharedContext.environment = AppEnvironment.dev
         
-        print("iOS App started with environment: \(BuildContext.shared.environment)")
+        print("iOS App started with environment: \(sharedContext.environment)")
     }
 
     var body: some Scene {

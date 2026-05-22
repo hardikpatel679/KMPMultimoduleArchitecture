@@ -24,8 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.domain.model.Product
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
+import coil3.compose.AsyncImage
 
 @Composable
 fun LanguageSwitcher(
@@ -138,8 +137,8 @@ fun ProductItemCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            KamelImage(
-                resource = { asyncPainterResource(data = product.thumbnail) },
+            AsyncImage(
+                model = product.thumbnail,
                 contentDescription = product.title,
                 modifier = Modifier
                     .size(80.dp)

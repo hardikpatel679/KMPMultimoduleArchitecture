@@ -1,36 +1,12 @@
 package com.hdapp.myapplication.feature.login
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -41,16 +17,21 @@ import com.hdapp.myapplication.core.getLocalizedMessage
 import com.hdapp.myapplication.core.localizedMessage
 import com.hdapp.myapplication.core.strings
 import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.ui.platform.testTag
+import org.koin.compose.viewmodel.koinViewModel
+import org.jetbrains.compose.resources.painterResource
+import myapplication.core.generated.resources.Res
+import myapplication.core.generated.resources.ic_logo
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
+    viewModel: LoginViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val currentStrings = strings
-    var username by remember { mutableStateOf("emilys") }
-    var password by remember { mutableStateOf("emilyspass") }
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -82,15 +63,14 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-        Box(
+        Image(
+            painter = painterResource(Res.drawable.ic_logo),
+            contentDescription = "App Logo",
             modifier = Modifier
                 .size(Dimens.logoSize)
                 .padding(Dimens.paddingSmall)
-                .testTag(TestTags.LOGIN_LOGO),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("LOGO")
-        }
+                .testTag(TestTags.LOGIN_LOGO)
+        )
 
         Spacer(modifier = Modifier.height(Dimens.spacingLarge))
 

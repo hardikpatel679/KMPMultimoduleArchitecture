@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -17,15 +15,12 @@ dependencies {
     implementation(projects.shared)
     implementation(projects.core)
     implementation(project(":feature:login"))
-    implementation(project(":feature:dashboard"))
     implementation(project(":data"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
@@ -33,17 +28,14 @@ dependencies {
 
 android {
     namespace = "com.hdapp.myapplication"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.hdapp.myapplication"
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-        versionCode = 2
-        versionName = "1.1"
-    }
-    buildFeatures {
-        buildConfig = true
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        versionCode = 1
+        versionName = "1.0"
     }
     packaging {
         resources {
@@ -55,24 +47,6 @@ android {
             isMinifyEnabled = false
         }
     }
-
-    flavorDimensions += "environment"
-    productFlavors {
-        create("dev") {
-            dimension = "environment"
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
-        }
-        create("mock") {
-            dimension = "environment"
-            applicationIdSuffix = ".mock"
-            versionNameSuffix = "-mock"
-        }
-        create("prod") {
-            dimension = "environment"
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

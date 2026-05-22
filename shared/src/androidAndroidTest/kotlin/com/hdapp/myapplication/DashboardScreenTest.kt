@@ -1,12 +1,10 @@
 package com.hdapp.myapplication
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.hdapp.myapplication.core.ProvideAppStrings
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import com.hdapp.myapplication.core.TestTags
-import com.hdapp.myapplication.domain.model.Product
-import com.hdapp.myapplication.domain.repository.ProductRepository
-import com.hdapp.myapplication.domain.usecase.GetProductsUseCase
 import com.hdapp.myapplication.feature.dashboard.DashboardScreen
 import com.hdapp.myapplication.feature.dashboard.DashboardViewModel
 import org.junit.Rule
@@ -17,57 +15,44 @@ class DashboardScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private class FakeProductRepository : ProductRepository {
-        override suspend fun getProducts(limit: Int, skip: Int): Result<List<Product>> {
-            return Result.success(listOf(
-                Product(1, "Product 1", "Description 1", 10.0, "", "Category 1"),
-                Product(2, "Product 2", "Description 2", 20.0, "", "Category 2")
-            ))
-        }
-    }
-
     @Test
     fun testDashboardElementsExist() {
-        val viewModel = DashboardViewModel(GetProductsUseCase(FakeProductRepository()))
+        val viewModel = DashboardViewModel()
         
         composeTestRule.setContent {
-            ProvideAppStrings(isArabic = false) {
-                DashboardScreen(viewModel = viewModel, onLogout = {})
-            }
+            DashboardScreen(viewModel = viewModel, onLogout = {})
         }
 
-        // Initially we should see the product list
-        composeTestRule.onNodeWithTag(TestTags.DASHBOARD_PRODUCT_LIST).assertExists()
+        composeTestRule.onNodeWithTag(TestTags.DASHBOARD_WELCOME_TEXT).assertExists()
+        composeTestRule.onNodeWithTag(TestTags.DASHBOARD_LOGOUT_BUTTON).assertExists()
         composeTestRule.onNodeWithTag(TestTags.DASHBOARD_LANGUAGE_SWITCH).assertExists()
     }
 
     @Test
     fun testToggleLanguage() {
-        val viewModel = DashboardViewModel(GetProductsUseCase(FakeProductRepository()))
+        val viewModel = DashboardViewModel()
         
         composeTestRule.setContent {
-            ProvideAppStrings(isArabic = false) {
-                DashboardScreen(viewModel = viewModel, onLogout = {})
-            }
+            DashboardScreen(viewModel = viewModel, onLogout = {})
         }
 
         composeTestRule.onNodeWithTag(TestTags.DASHBOARD_LANGUAGE_SWITCH).performClick()
         
-        // Check if switch state updated
+        // Check if state updated
         composeTestRule.onNodeWithTag(TestTags.DASHBOARD_LANGUAGE_SWITCH).assertIsOn()
     }
 
     @Test
-    fun testSearchFieldAppears() {
-        val viewModel = DashboardViewModel(GetProductsUseCase(FakeProductRepository()))
+    fun testLogoutButtonClick() {
+        val viewModel = DashboardViewModel()
+        var logoutClicked = false
         
         composeTestRule.setContent {
-            ProvideAppStrings(isArabic = false) {
-                DashboardScreen(viewModel = viewModel, onLogout = {})
-            }
+            DashboardScreen(viewModel = viewModel, onLogout = { logoutClicked = true })
         }
 
-        composeTestRule.onNodeWithContentDescription("Open Search").performClick()
-        composeTestRule.onNodeWithTag(TestTags.DASHBOARD_SEARCH_FIELD).assertExists()
+        composeTestRule.onNodeWithTag(TestTags.DASHBOARD_LOGOUT_BUTTON).performClick()
+        
+        assert(logoutClicked)
     }
 }

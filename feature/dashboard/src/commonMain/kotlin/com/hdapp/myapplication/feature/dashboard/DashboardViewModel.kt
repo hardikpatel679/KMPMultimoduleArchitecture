@@ -19,6 +19,10 @@ open class DashboardViewModel(
     private val _effect = MutableSharedFlow<DashboardEffect>(extraBufferCapacity = 1)
     val effect = _effect.asSharedFlow()
 
+    init {
+        onIntent(DashboardIntent.FetchProducts)
+    }
+
     fun onIntent(intent: DashboardIntent) {
         when (intent) {
             DashboardIntent.ToggleLanguage -> {
@@ -30,55 +34,28 @@ open class DashboardViewModel(
             is DashboardIntent.SelectTab -> {
                 _state.update { it.copy(selectedTab = intent.tab) }
             }
-            DashboardIntent.LoadProducts -> {
-                loadProducts()
+            is DashboardIntent.SelectCategory -> {
+                _state.update { it.copy(selectedCategory = intent.category) }
             }
-            DashboardIntent.LoadMoreProducts -> {
-                loadMoreProducts()
-            }
-            is DashboardIntent.SearchProducts -> {
-                _state.update { it.copy(searchQuery = intent.query) }
-            }
+            DashboardIntent.FetchProducts -> fetchProducts()
         }
     }
 
-    private fun loadProducts() {
-        if (_state.value.products.isNotEmpty()) return
-        
+    private fun fetchProducts() {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, hasMore = true) }
-            val result = getProductsUseCase(limit = 10, skip = 0)
-            result.onSuccess { products ->
+            _state.update { it.copy(isLoading = true, error = null) }
+            getProductsUseCase().onSuccess { products ->
+                val categories = products.map { it.category }.distinct()
                 _state.update { 
                     it.copy(
+                        isLoading = false, 
                         products = products, 
-                        isLoading = false,
-                        hasMore = products.size >= 10
+                        categories = categories,
+                        selectedCategory = categories.firstOrNull()
                     ) 
                 }
-            }.onFailure {
-                _state.update { it.copy(isLoading = false) }
-            }
-        }
-    }
-
-    private fun loadMoreProducts() {
-        if (_state.value.isLoadingMore || !_state.value.hasMore) return
-
-        viewModelScope.launch {
-            _state.update { it.copy(isLoadingMore = true) }
-            val currentProductsCount = _state.value.products.size
-            val result = getProductsUseCase(limit = 10, skip = currentProductsCount)
-            result.onSuccess { newProducts ->
-                _state.update { 
-                    it.copy(
-                        products = it.products + newProducts,
-                        isLoadingMore = false,
-                        hasMore = newProducts.size >= 10
-                    ) 
-                }
-            }.onFailure {
-                _state.update { it.copy(isLoadingMore = false) }
+            }.onFailure { error ->
+                _state.update { it.copy(isLoading = false, error = error.message) }
             }
         }
     }

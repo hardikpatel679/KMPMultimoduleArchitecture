@@ -1,19 +1,18 @@
 package com.hdapp.myapplication.core
 
 import io.ktor.client.plugins.*
+import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 
 suspend fun <T> safeApiCall(block: suspend () -> T): Result<T> {
     return try {
         Result.success(block())
-    } catch (e: Throwable) {
-        println("SafeApiCall: Caught throwable: ${e::class.simpleName} - ${e.message}")
+    } catch (e: Exception) {
+        println("SafeApiCall: Caught exception: ${e::class.simpleName} - ${e.message}")
         e.printStackTrace()
         if (e is CancellationException) throw e
-        
-        val error = if (e is Exception) mapToNetworkError(e) else NetworkError.Unknown(e.message ?: "Fatal Error")
-        Result.failure(error)
+        Result.failure(mapToNetworkError(e))
     }
 }
 
@@ -24,7 +23,7 @@ private fun mapToNetworkError(e: Exception): NetworkError {
                 401 -> NetworkError.Unauthorized()
                 403 -> NetworkError.Forbidden()
                 404 -> NetworkError.NotFound()
-                else -> NetworkError.Unknown(e.message)
+                else -> NetworkError.Unknown(e.message ?: "")
             }
         }
         is ServerResponseException -> NetworkError.ServerError(e.response.status.value)

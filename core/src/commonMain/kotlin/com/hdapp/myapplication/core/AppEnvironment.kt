@@ -9,6 +9,6 @@ enum class AppEnvironment {
 }
 
 @ThreadLocal
-object BuildContext {
+object AppBuildContext {
     var environment: AppEnvironment = AppEnvironment.PROD
 }

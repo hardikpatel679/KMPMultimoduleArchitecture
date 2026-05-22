@@ -1,14 +1,13 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
     android {
         namespace = "com.hdapp.myapplication.domain"
-        compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        minSdk = libs.versions.androidMinSdk.get().toInt()
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
         withHostTest {}
 
@@ -31,11 +30,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
         androidMain.dependencies {
-            implementation(libs.hilt.android)
         }
     }
 }
 
 dependencies {
-    add("kspAndroid", libs.hilt.compiler)
 }
