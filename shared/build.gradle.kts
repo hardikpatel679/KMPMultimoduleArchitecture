@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -34,12 +33,6 @@ kotlin {
            enable = true
        }
 
-       withDeviceTest {
-           instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-       }
-
-       withHostTest {}
-
        compilerOptions {
            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
        }
@@ -69,26 +62,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         androidMain.dependencies {
-            implementation(libs.androidx.hilt.navigation.compose)
-            implementation(libs.hilt.android)
-        }
-        val androidDeviceTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.compose.test.ui)
-                implementation(libs.compose.test.manifest)
-            }
-        }
-        val androidHostTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.androidx.testExt.junit)
-            }
         }
     }
 }
 
-dependencies {
-    add("kspAndroid", libs.hilt.compiler)
-    add("androidRuntimeClasspath", libs.compose.test.manifest)
-}
+// dependencies {
+//    add("androidRuntimeClasspath", libs.compose.test.manifest)
+// }

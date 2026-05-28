@@ -6,7 +6,7 @@ import com.hdapp.myapplication.domain.repository.ProductRepository
 class GetProductsUseCase(
     private val repository: ProductRepository
 ) {
-    suspend operator fun invoke(): Result<List<Product>> {
-        return repository.getProducts()
+    suspend operator fun invoke(limit: Int, skip: Int): Result<List<Product>> {
+        return repository.getProducts(limit = limit, skip = skip)
     }
 }

@@ -4,36 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.hdapp.myapplication.feature.login.AndroidLoginViewModel
-import com.hdapp.myapplication.feature.login.LoginViewModel
-import com.hdapp.myapplication.feature.dashboard.AndroidDashboardViewModel
-import com.hdapp.myapplication.feature.dashboard.DashboardViewModel
 import com.hdapp.myapplication.core.AppEnvironment
-import com.hdapp.myapplication.core.BuildContext
-import dagger.hilt.android.AndroidEntryPoint
+import com.hdapp.myapplication.core.AppBuildContext
+import kotlin.jvm.java
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        // Initialize BuildContext based on Flavor
-        val flavor = BuildConfig.FLAVOR
-        BuildContext.environment = when {
+        // Initialize AppBuildContext based on Flavor if available
+        val flavor = getFlavorName()
+        AppBuildContext.environment = when {
             flavor.contains("dev") -> AppEnvironment.DEV
             flavor.contains("mock") -> AppEnvironment.MOCK
             else -> AppEnvironment.PROD
         }
 
         setContent {
-            val loginViewModel: LoginViewModel = hiltViewModel<AndroidLoginViewModel>()
-            val dashboardViewModel: DashboardViewModel = hiltViewModel<AndroidDashboardViewModel>()
-            App(
-                loginViewModel = loginViewModel,
-                dashboardViewModel = dashboardViewModel,
-            )
+            App()
+        }
+    }
+
+    private fun getFlavorName(): String {
+        return try {
+            val field = BuildConfig::class.java.getField("FLAVOR")
+            field.get(null) as String
+        } catch (_: Exception) {
+            ""
         }
     }
 }
