@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,15 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import com.hdapp.myapplication.core.Dimens
 import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.domain.model.Product
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 
 @Composable
 fun LanguageSwitcher(
@@ -35,13 +41,13 @@ fun LanguageSwitcher(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(end = 8.dp)
+        modifier = modifier.padding(end = Dimens.paddingSmall)
     ) {
         Text(
             text = if (isArabic) "العربية" else "English",
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(Dimens.spacingSmall))
         Switch(
             checked = isArabic,
             onCheckedChange = onToggle,
@@ -63,8 +69,8 @@ fun DashboardSearchBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(72.dp)
-            .padding(horizontal = 16.dp),
+            .height(Dimens.headerHeight)
+            .padding(horizontal = Dimens.paddingMedium),
         contentAlignment = Alignment.CenterEnd
     ) {
         AnimatedVisibility(
@@ -113,7 +119,7 @@ fun DashboardSearchBar(
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(24.dp),
+                shape = RoundedCornerShape(Dimens.cornerRadiusLarge),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -130,24 +136,36 @@ fun ProductItemCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.elevationLow)
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(Dimens.cardPadding)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            KamelImage(
-                resource = { asyncPainterResource(data = product.thumbnail) },
+            val placeholderPainter = rememberVectorPainter(Icons.Default.Image)
+            
+            AsyncImage(
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(product.thumbnail.trim())
+                    .crossfade(true)
+                    .httpHeaders(
+                        NetworkHeaders.Builder()
+                            .set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                            .build()
+                    )
+                    .build(),
                 contentDescription = product.title,
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+                    .size(Dimens.productImageSize)
+                    .clip(RoundedCornerShape(Dimens.cornerRadiusSmall)),
+                contentScale = ContentScale.Crop,
+                placeholder = placeholderPainter,
+                error = placeholderPainter
             )
             
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(Dimens.spacingMedium))
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -162,14 +180,14 @@ fun ProductItemCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.secondary
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(Dimens.spacingExtraSmall))
                 Text(
                     text = product.description,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(Dimens.spacingExtraSmall))
                 Text(
                     text = "$${product.price}",
                     style = MaterialTheme.typography.titleSmall,

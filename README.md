@@ -1,6 +1,14 @@
-# KMP - Multimodule + Clean Architecture with MVI v1.1
+# KMP - Multimodule + Clean Architecture with MVI v1.2
 
 A professional-grade **Kotlin Multiplatform (KMP)** mobile application built with **Clean Architecture** and the **MVI (Model-View-Intent)** pattern. This project showcases modern cross-platform development, demonstrating a highly modularized structure, platform-independent business logic, and advanced UI patterns.
+
+## 🆕 Recent Updates (v1.2)
+
+- **SDK Stabilization:** Fixed `unresolved reference` errors by centralizing `androidCompileSdk`, `androidMinSdk`, and `androidTargetSdk` within the **Gradle Version Catalog** (`libs.versions.toml`).
+- **Code Optimization:** 
+    - Performed a surgical cleanup of the `:core` module, removing unused design tokens and properties in `Dimens.kt`.
+    - Established a **Common Platform Rule** (documented in `AGENTS.md`) to strictly enforce the removal of unused variables and imports across the entire project.
+- **Enhanced Dependency Management:** Refined `libs.versions.toml` to ensure consistent SDK and library versions across all 7 sub-modules.
 
 ## 🚀 Key Highlights
 

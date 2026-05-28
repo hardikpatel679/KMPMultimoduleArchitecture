@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
+import com.hdapp.myapplication.core.Dimens
 import com.hdapp.myapplication.core.TestTags
-import com.hdapp.myapplication.core.strings
-import com.hdapp.myapplication.core.components.LoadingView
 import com.hdapp.myapplication.core.components.EmptyStateView
+import com.hdapp.myapplication.core.components.LoadingView
+import com.hdapp.myapplication.core.strings
 import com.hdapp.myapplication.feature.dashboard.components.DashboardSearchBar
 import com.hdapp.myapplication.feature.dashboard.components.LanguageSwitcher
 import com.hdapp.myapplication.feature.dashboard.components.ProductItemCard
@@ -158,8 +158,12 @@ fun ProductTab(
                     modifier = Modifier
                         .fillMaxSize()
                         .testTag(TestTags.DASHBOARD_PRODUCT_LIST),
-                    contentPadding = PaddingValues(bottom = 16.dp, start = 16.dp, end = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    contentPadding = PaddingValues(
+                        bottom = Dimens.paddingMedium, 
+                        start = Dimens.paddingMedium, 
+                        end = Dimens.paddingMedium
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(Dimens.spacingMedium)
                 ) {
                     items(filteredProducts, key = { it.id }) { product ->
                         ProductItemCard(product = product)
@@ -178,10 +182,10 @@ fun ProductTab(
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp),
+                                    .padding(Dimens.paddingMedium),
                                 contentAlignment = Alignment.Center
                             ) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                                CircularProgressIndicator(modifier = Modifier.size(Dimens.iconSizeSmall))
                             }
                         }
                     }
