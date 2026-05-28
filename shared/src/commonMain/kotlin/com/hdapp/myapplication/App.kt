@@ -11,14 +11,17 @@ import com.hdapp.myapplication.feature.dashboard.DashboardViewModel
 import com.hdapp.myapplication.feature.login.LoginIntent
 import com.hdapp.myapplication.feature.login.LoginScreen
 import com.hdapp.myapplication.feature.login.LoginViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun App(
-    loginViewModel: LoginViewModel,
-    dashboardViewModel: DashboardViewModel
+    loginViewModel: LoginViewModel = koinViewModel(),
+    dashboardViewModel: DashboardViewModel = koinViewModel()
 ) {
     val loginState by loginViewModel.state.collectAsState()
     val dashboardState by dashboardViewModel.state.collectAsState()
+
+    println("App: Recomposing. User=${loginState.user?.username}, isArabic=${dashboardState.isArabic}")
 
     AppLocalization(isArabic = dashboardState.isArabic) {
         ProvideAppStrings(isArabic = dashboardState.isArabic) {
@@ -26,12 +29,15 @@ fun App(
                 if (loginState.user == null) {
                     LoginScreen(
                         viewModel = loginViewModel,
-                        onLoginSuccess = { }
+                        onLoginSuccess = { 
+                            println("App: onLoginSuccess callback called")
+                        }
                     )
                 } else {
                     DashboardScreen(
                         viewModel = dashboardViewModel,
                         onLogout = { 
+                            println("App: onLogout callback called")
                             loginViewModel.onIntent(LoginIntent.Logout)
                         }
                     )

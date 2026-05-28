@@ -1,4 +1,4 @@
-
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -27,8 +27,8 @@ kotlin {
 
     android {
        namespace = "com.hdapp.myapplication.shared"
-       compileSdk = libs.versions.androidCompileSdk.get().toInt()
-       minSdk = libs.versions.androidMinSdk.get().toInt()
+       compileSdk = libs.versions.android.compileSdk.get().toInt()
+       minSdk = libs.versions.android.minSdk.get().toInt()
 
        androidResources {
            enable = true
@@ -58,10 +58,11 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
-            implementation(libs.compose.icons.extended)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {

@@ -19,6 +19,7 @@ data class RemoteProduct(
     val price: Double,
     val category: String,
     val thumbnail: String? = null,
+    val images: List<String> = emptyList(),
     val brand: String? = null,
     val rating: Double? = null,
     val stock: Int? = null
@@ -31,6 +32,7 @@ fun RemoteProduct.toDomain(): Product {
         description = description,
         price = price,
         thumbnail = thumbnail ?: "",
-        category = category
+        category = category,
+        images = images
     )
 }

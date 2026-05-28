@@ -1,7 +1,7 @@
 package com.hdapp.myapplication.di
 
+import com.hdapp.myapplication.core.AppBuildContext
 import com.hdapp.myapplication.core.AppEnvironment
-import com.hdapp.myapplication.core.BuildContext
 import com.hdapp.myapplication.core.createHttpClient
 import com.hdapp.myapplication.data.repository.LoginRepositoryImpl
 import com.hdapp.myapplication.data.repository.MockLoginRepositoryImpl
@@ -12,43 +12,53 @@ import com.hdapp.myapplication.domain.usecase.GetProductsUseCase
 import com.hdapp.myapplication.domain.usecase.LoginUseCase
 import com.hdapp.myapplication.feature.dashboard.DashboardViewModel
 import com.hdapp.myapplication.feature.login.LoginViewModel
-import io.ktor.client.*
 import kotlinx.serialization.json.Json
+import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.KoinAppDeclaration
+import org.koin.dsl.module
 
 /**
- * A simple Dependency Injection container for Kotlin Multiplatform.
- * This can be used from iOS (Swift) to access shared logic and dependencies.
- *
- * On Android, Hilt is used for dependency injection, but it uses the same
- * underlying factory functions and classes.
+ * Koin modules for the shared logic.
  */
-object KmpDI {
-    val httpClient: HttpClient by lazy {
-        createHttpClient()
-    }
 
-    private val json = Json { ignoreUnknownKeys = true }
+val networkModule = module {
+    single { createHttpClient() }
+    single { Json { ignoreUnknownKeys = true } }
+}
 
-    val loginRepository: LoginRepository by lazy {
-        if (BuildContext.environment == AppEnvironment.MOCK) {
-            MockLoginRepositoryImpl(json)
+val repositoryModule = module {
+    single<LoginRepository> {
+        if (AppBuildContext.environment == AppEnvironment.MOCK) {
+            MockLoginRepositoryImpl(get())
         } else {
-            LoginRepositoryImpl(httpClient)
+            LoginRepositoryImpl(get())
         }
     }
-
-    val loginUseCase: LoginUseCase by lazy {
-        LoginUseCase(loginRepository)
-    }
-
-    val productRepository: ProductRepository by lazy {
-        ProductRepositoryImpl(httpClient)
-    }
-
-    val getProductsUseCase: GetProductsUseCase by lazy {
-        GetProductsUseCase(productRepository)
-    }
-
-    fun createLoginViewModel() = LoginViewModel(loginUseCase)
-    fun createDashboardViewModel() = DashboardViewModel(getProductsUseCase)
+    single<ProductRepository> { ProductRepositoryImpl(get()) }
 }
+
+val useCaseModule = module {
+    factoryOf(::LoginUseCase)
+    factoryOf(::GetProductsUseCase)
+}
+
+val viewModelModule = module {
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::DashboardViewModel)
+}
+
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
+    startKoin {
+        appDeclaration()
+        modules(
+            networkModule,
+            repositoryModule,
+            useCaseModule,
+            viewModelModule
+        )
+    }
+
+// For iOS usage
+fun initKoin() = initKoin {}
