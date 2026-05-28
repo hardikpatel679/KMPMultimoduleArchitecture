@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hdapp.myapplication.feature.login.AndroidLoginViewModel
 import com.hdapp.myapplication.feature.login.LoginViewModel
 import com.hdapp.myapplication.feature.dashboard.AndroidDashboardViewModel
@@ -20,9 +20,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize BuildContext based on Flavor
-        BuildContext.environment = when (BuildConfig.FLAVOR) {
-            "dev" -> AppEnvironment.DEV
-            "mock" -> AppEnvironment.MOCK
+        val flavor = BuildConfig.FLAVOR
+        BuildContext.environment = when {
+            flavor.contains("dev") -> AppEnvironment.DEV
+            flavor.contains("mock") -> AppEnvironment.MOCK
             else -> AppEnvironment.PROD
         }
 
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
             val dashboardViewModel: DashboardViewModel = hiltViewModel<AndroidDashboardViewModel>()
             App(
                 loginViewModel = loginViewModel,
-                dashboardViewModel = dashboardViewModel
+                dashboardViewModel = dashboardViewModel,
             )
         }
     }

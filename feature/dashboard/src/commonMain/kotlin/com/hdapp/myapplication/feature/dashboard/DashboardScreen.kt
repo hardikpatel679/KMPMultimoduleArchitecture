@@ -1,8 +1,11 @@
 package com.hdapp.myapplication.feature.dashboard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Settings
@@ -14,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import com.hdapp.myapplication.core.Dimens
 import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.core.components.EmptyStateView
@@ -137,17 +141,21 @@ fun ProductTab(
             title = strings.tabProduct
         )
 
+        CategorySelector(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onCategorySelected = { onIntent(DashboardIntent.SelectCategory(it)) }
+        )
+
         if (state.isLoading) {
             LoadingView()
         } else {
-            val filteredProducts = remember(state.products, state.searchQuery) {
-                if (state.searchQuery.isBlank()) {
-                    state.products
-                } else {
-                    state.products.filter { 
-                        it.title.contains(state.searchQuery, ignoreCase = true) ||
-                        it.category.contains(state.searchQuery, ignoreCase = true)
-                    }
+            val filteredProducts = remember(state.products, state.searchQuery, state.selectedCategory) {
+                state.products.filter { 
+                    val matchesSearch = it.title.contains(state.searchQuery, ignoreCase = true) ||
+                                       it.category.contains(state.searchQuery, ignoreCase = true)
+                    val matchesCategory = state.selectedCategory == null || it.category == state.selectedCategory
+                    matchesSearch && matchesCategory
                 }
             }
 
@@ -192,6 +200,57 @@ fun ProductTab(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CategorySelector(
+    categories: List<String>,
+    selectedCategory: String?,
+    onCategorySelected: (String?) -> Unit
+) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = Dimens.paddingSmall),
+        contentPadding = PaddingValues(horizontal = Dimens.paddingMedium),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.spacingSmall)
+    ) {
+        item {
+            CategoryChip(
+                category = "All",
+                isSelected = selectedCategory == null,
+                onClick = { onCategorySelected(null) }
+            )
+        }
+        items(categories) { category ->
+            CategoryChip(
+                category = category,
+                isSelected = category == selectedCategory,
+                onClick = { onCategorySelected(category) }
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryChip(
+    category: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+        border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Text(
+            text = category.replaceFirstChar { it.uppercase() },
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = MaterialTheme.typography.labelLarge
+        )
     }
 }
 

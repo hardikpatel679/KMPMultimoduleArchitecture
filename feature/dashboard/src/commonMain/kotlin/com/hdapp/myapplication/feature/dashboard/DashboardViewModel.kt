@@ -30,6 +30,9 @@ open class DashboardViewModel(
             is DashboardIntent.SelectTab -> {
                 _state.update { it.copy(selectedTab = intent.tab) }
             }
+            is DashboardIntent.SelectCategory -> {
+                _state.update { it.copy(selectedCategory = intent.category) }
+            }
             DashboardIntent.LoadProducts -> {
                 loadProducts()
             }
@@ -49,9 +52,11 @@ open class DashboardViewModel(
             _state.update { it.copy(isLoading = true, hasMore = true) }
             val result = getProductsUseCase(limit = 10, skip = 0)
             result.onSuccess { products ->
+                val categories = products.map { it.category }.distinct()
                 _state.update { 
                     it.copy(
-                        products = products, 
+                        products = products,
+                        categories = categories,
                         isLoading = false,
                         hasMore = products.size >= 10
                     ) 
@@ -70,9 +75,12 @@ open class DashboardViewModel(
             val currentProductsCount = _state.value.products.size
             val result = getProductsUseCase(limit = 10, skip = currentProductsCount)
             result.onSuccess { newProducts ->
+                val allProducts = _state.value.products + newProducts
+                val categories = allProducts.map { it.category }.distinct()
                 _state.update { 
                     it.copy(
-                        products = it.products + newProducts,
+                        products = allProducts,
+                        categories = categories,
                         isLoadingMore = false,
                         hasMore = newProducts.size >= 10
                     ) 

@@ -1,5 +1,6 @@
 package com.hdapp.myapplication.feature.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,9 @@ import com.hdapp.myapplication.core.TestTags
 import com.hdapp.myapplication.core.getLocalizedMessage
 import com.hdapp.myapplication.core.localizedMessage
 import com.hdapp.myapplication.core.strings
+import myapplication.core.generated.resources.Res
+import myapplication.core.generated.resources.ic_logo
+import org.jetbrains.compose.resources.painterResource
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -85,11 +89,14 @@ fun LoginScreen(
         Box(
             modifier = Modifier
                 .size(Dimens.logoSize)
-                .padding(Dimens.paddingSmall)
                 .testTag(TestTags.LOGIN_LOGO),
             contentAlignment = Alignment.Center
         ) {
-            Text("LOGO")
+            Image(
+                painter = painterResource(Res.drawable.ic_logo),
+                contentDescription = "App Logo",
+                modifier = Modifier.fillMaxSize()
+            )
         }
 
         Spacer(modifier = Modifier.height(Dimens.spacingLarge))
